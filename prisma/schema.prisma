@@ -1,0 +1,63 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Profile {
+  id                   Int        @id @default(autoincrement())
+  firstName            String
+  lastName             String
+  profession           String
+  balance              Float
+  type                 String
+  contractAsClient     Contract[] @relation("ClientProfile")
+  contractAsContractor Contract[] @relation("ContractorProfile")
+  deposits             Deposit[]
+}
+
+model Deposit {
+  id            Int      @id @default(autoincrement())
+  clientId      Int
+  operationDate DateTime
+  depositValue  Float
+  profile       Profile  @relation(fields: [clientId], references: [id])
+}
+
+model Contract {
+  id            Int      @id @default(autoincrement())
+  terms         String
+  clientId      Int
+  contractorId  Int
+  operationDate DateTime
+  status        String
+  client        Profile  @relation("ClientProfile", fields: [clientId], references: [id])
+  contractor    Profile  @relation("ContractorProfile", fields: [contractorId], references: [id])
+  jobs          Job[]
+}
+
+model Job {
+  id            Int       @id @default(autoincrement())
+  contractId    Int
+  description   String
+  operationDate DateTime
+  paymentDate   DateTime
+  price         Float
+  paid          Int
+  contract      Contract  @relation(fields: [contractId], references: [id])
+  payments      Payment[]
+}
+
+model Payment {
+  id            Int      @id @default(autoincrement())
+  jobId         Int
+  operationDate DateTime
+  paymentValue  Float
+  job           Job      @relation(fields: [jobId], references: [id])
+}
