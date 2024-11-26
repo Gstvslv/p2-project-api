@@ -2,17 +2,12 @@ import { prisma } from "../database/prisma-client";
 import { Payment } from '@prisma/client';
 import { JobRepository } from "./job.repository";
 
-const jobRepository =  new JobRepository();
+const jobRepository = new JobRepository();
 
 export class PaymentRepository {
 
-    // async create(paymentData: Payment): Promise<Payment> {
-    //     return prisma.payment.create({
-    //         data: paymentData
-    //     });
-    // }
     async create(paymentData: Payment): Promise<Payment> {
-        // Primeiro, criamos o pagamento
+
         const payment = await prisma.payment.create({
             data: paymentData
         });

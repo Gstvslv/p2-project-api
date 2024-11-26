@@ -5,7 +5,6 @@ const contractRepo = new ContractRepository();
 
 export class ContractService {
 
-    // Usando Prisma.ContractCreateInput para garantir que o id não será passado
     async create(contractData: Prisma.ContractCreateInput): Promise<Contract> {
         return contractRepo.create(contractData);
     }

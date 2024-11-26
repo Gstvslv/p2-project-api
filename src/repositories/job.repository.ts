@@ -3,7 +3,6 @@ import { Job } from '@prisma/client';
 
 export class JobRepository {
 
-    // Criar um Job
     async create(jobData: Job): Promise<Job> {
         return prisma.job.create({
             data: jobData
